@@ -1,21 +1,22 @@
-import React from 'react';
-import './App.css';
-import Birthday from './Birthday';
-import { Route, Switch } from 'react-router-dom';
-import RouterBirthday from './RouterBirthday';
-import Generate from './Generate';
+import React, { useState } from "react";
+import "./App.css";
+import { Route, Switch } from "react-router-dom";
+import Birthday from "./Birthday";
+import GiftCover from "./GiftCover";
 
 function App() {
+  const [showCover, setShowCover] = useState(true);
+
+  const handleOpenGift = () => {
+    setShowCover(false);
+  };
+
   return (
-    <div className='App'>
+    <div className="App">
       <Switch>
-        <Route exact path='/' component={Birthday} />
-        <Route
-          exact
-          path='/birthday/:name?/:day?/:month?'
-          component={RouterBirthday}
-        />
-        <Route exact path='/generate' component={Generate} />
+        <Route exact path="/">
+          {showCover ? <GiftCover onOpenGift={handleOpenGift} /> : <Birthday />}
+        </Route>
       </Switch>
     </div>
   );

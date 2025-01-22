@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Countdown from './Countdown';
-import githubLogo from './githubLogo.svg';
-import { Link } from 'react-router-dom';
 
 const Birthday = ({ name, day, month }) => {
-  // useState Hooks
   const [state, setState] = useState({
     seconds: 0,
     hours: 0,
@@ -14,44 +11,34 @@ const Birthday = ({ name, day, month }) => {
   });
 
   if (name === undefined || day === undefined || month === undefined) {
-    // This is if not enough params are provided
-    name = 'Deepankar'; // Name of the Person
-    month = 6; // Month of the Birthday
-    day = 14; // Day of the Birthday
+    // Valores por defecto
+    name = 'L’Entrecote Café de París';
+    month = 1;
+    day = 31;
   }
 
-  // get current time
   const currentTime = new Date();
-  // get current year
   const currentYear = currentTime.getFullYear();
 
-  // Getting the Birthday in Data Object
-  // WE subtract 1 from momnth ; Months start from 0 in Date Object
-  // Bithday Boolean
+  // Check si hoy es el día de la reserva
   const isItBday =
     currentTime.getDate() === day && currentTime.getMonth() === month - 1;
 
   useEffect(() => {
-    setInterval(() => {
+    const timer = setInterval(() => {
       const countdown = () => {
-        // Getting the Current Date
         const dateAtm = new Date();
-
-        // if the Birthday has passed
-        // then set the Birthday countdown for next year
         let birthdayDay = new Date(currentYear, month - 1, day);
+
         if (dateAtm > birthdayDay) {
+          // Si la fecha ya pasó, se toma el próximo año
           birthdayDay = new Date(currentYear + 1, month - 1, day);
         } else if (dateAtm.getFullYear() === birthdayDay.getFullYear() + 1) {
           birthdayDay = new Date(currentYear, month - 1, day);
         }
 
-        // Getitng Current Time
         const currentTime = dateAtm.getTime();
-        // Getting Birthdays Time
         const birthdayTime = birthdayDay.getTime();
-
-        // Time remaining for the Birthday
         const timeRemaining = birthdayTime - currentTime;
 
         let seconds = Math.floor(timeRemaining / 1000);
@@ -63,7 +50,6 @@ const Birthday = ({ name, day, month }) => {
         minutes %= 60;
         hours %= 24;
 
-        // Setting States
         setState((prevState) => ({
           ...prevState,
           seconds,
@@ -72,8 +58,8 @@ const Birthday = ({ name, day, month }) => {
           days,
           isItBday,
         }));
-        // console.log(`${days}:${hours}:${minutes}:${seconds} , ${isItBday}`);
       };
+
       if (!isItBday) {
         countdown();
       } else {
@@ -83,40 +69,43 @@ const Birthday = ({ name, day, month }) => {
         }));
       }
     }, 1000);
+
+    return () => clearInterval(timer);
   }, [currentYear, day, isItBday, month]);
 
-  let birth = new Date(currentYear, month - 1, day);
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  let monthBday = monthNames[birth.getMonth()];
-
   return (
-    <div className='page'>
+    <div className="page">
+      {/* 1. LOGO ARRIBA */}
+      <img
+        src="/logo_cafe.png"
+        alt="Logo Café de París"
+        className="restaurant-image"
+        style={{ maxWidth: '250px', marginBottom: '20px' }}
+      />
+
+      {/* 2. CONTADOR */}
       <Countdown countdownData={state} name={name} />
-      {!isItBday && (
+
+      {/* 3. MOSTRAR RESERVA + MAPA SI NO ES EL DÍA */}
+      {!state.isItBday && (
         <>
-          <div className='birthdate'>
-            Birth-Date: {day} {monthBday} {currentYear}
+          <div className="birthdate">Reserva: 31 Enero 2025 [22:30]</div>
+          {/* 4. MAPA AL FINAL */}
+          <div className="map-container">
+            <iframe
+              title="Ubicación de L’Entrecote Café de París"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.4457773691786!2d-3.6888824846051567!3d40.421840879363215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422899972b9187%3A0xf545f8ffd6dc345e!2sL%E2%80%99Entrecote%20Caf%C3%A9%20de%20Par%C3%ADs!5e0!3m2!1ses!2ses!4v1679860244056!5m2!1ses!2ses"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
-          <div className='credits'>
-            <a href='https://github.com/Deep-Codes'>
-              <img src={githubLogo} alt='Github-Logo' className='github-logo' />
-            </a>
-          </div>
-          <Link to='/generate'>Generate Here</Link>
         </>
+      )}
+
+      {/* 5. MENSAJE SI YA ES EL DÍA */}
+      {state.isItBday && (
+        <div className="wish-message">¡Hoy es el gran día! ¡A disfrutar!</div>
       )}
     </div>
   );

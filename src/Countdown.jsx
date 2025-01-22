@@ -6,7 +6,7 @@ const Countdown = ({ countdownData, name }) => {
     return (
       <div>
         <h1 className='heading'>
-          Countdown to <span className='highlight'>{name}'s</span> Birthday
+          Cuenta atrás para <span className='highlight'>{name}</span>
         </h1>
         <div className='countdown-wrapper'>
           <div className='countdown-box'>

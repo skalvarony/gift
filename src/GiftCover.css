@@ -1,0 +1,229 @@
+/* ---------------------------
+   ESTILOS GENERALES DE PORTADA
+   --------------------------- */
+
+/* Al inicio, la portada es totalmente visible */
+.gift-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #1d1d1d;
+  color: #eee;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  opacity: 1; /* Para el fade-out */
+}
+
+.gift-instructions {
+  margin-bottom: 40px;
+}
+
+.gift-title {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #dcd6f7;
+}
+
+.gift-subtitle {
+  font-size: 18px;
+  color: #a6b1e1;
+  margin-bottom: 20px;
+}
+
+.gift-button {
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #7f78d2;
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.gift-button:hover {
+  background-color: #9c94e5;
+}
+
+/* Fade-out de la portada (1s) */
+.gift-cover--fadeout {
+  animation: fade-out 1s forwards ease-in-out;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------------------------
+     ESCENA 3D
+     --------------------------- */
+.gift-3d-scene {
+  width: 300px;
+  height: 300px;
+  perspective: 800px; /* Controla la profundidad 3D */
+  position: relative;
+  margin: 0 auto;
+}
+
+.gift-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d; /* Permite 3D en los hijos */
+}
+
+/* Animación de rebote opcional de toda la caja al abrir */
+.gift-box--opening {
+  animation: box-pop 1.5s forwards ease-in-out;
+}
+
+@keyframes box-pop {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.1);
+  }
+  30% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------------------------
+     CINTAS (BANDAS)
+     --------------------------- */
+.gift-ribbon-vertical,
+.gift-ribbon-horizontal {
+  position: absolute;
+  background-color: #fff; /* Color de la banda */
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Cinta vertical */
+.gift-ribbon-vertical {
+  width: 20px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* Cinta horizontal */
+.gift-ribbon-horizontal {
+  width: 100%;
+  height: 20px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Al abrir, vuelan las cintas (1.5s) */
+.gift-box--opening .gift-ribbon-vertical {
+  animation: ribbon-vertical-fly 1.5s forwards ease-in-out;
+}
+@keyframes ribbon-vertical-fly {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-120%) translateY(-30%) rotate(-30deg);
+  }
+  100% {
+    transform: translateX(-300%) translateY(-80%) rotate(-90deg);
+    opacity: 0;
+  }
+}
+
+.gift-box--opening .gift-ribbon-horizontal {
+  animation: ribbon-horizontal-fly 1.5s forwards ease-in-out;
+}
+@keyframes ribbon-horizontal-fly {
+  0% {
+    transform: translateY(-50%) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-110%) translateX(50%) rotate(45deg);
+  }
+  100% {
+    transform: translateY(-300%) translateX(100%) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+/* ---------------------------
+     BASE DE LA CAJA
+     (80% de la altura total)
+     --------------------------- */
+.gift-box-base {
+  width: 100%; /* MISMA ANCHURA que el contenedor */
+  height: 80%; /* 80% de la altura total de .gift-box */
+  position: absolute;
+  bottom: 0;
+  transform-origin: center center;
+  border-radius: 5px;
+  background: repeating-linear-gradient(
+    45deg,
+    #413c69 0px,
+    #413c69 10px,
+    #7f78d2 10px,
+    #7f78d2 20px
+  );
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------------------------
+     TAPA DE LA CAJA
+     (20% de la altura total)
+     --------------------------- */
+.gift-box-lid {
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  bottom: 80%; /* Arranca encima de la base */
+  transform-origin: bottom center;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  background: repeating-linear-gradient(
+    45deg,
+    #413c69 0px,
+    #413c69 10px,
+    #7f78d2 10px,
+    #7f78d2 20px
+  );
+}
+
+/* Sube la tapa en lugar de rotarla */
+/* Empezará con un pequeño delay para que las cintas vuelen primero */
+.gift-box--opening .gift-box-lid {
+  animation: open-lid 1s 0.8s forwards ease-in-out;
+}
+
+@keyframes open-lid {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20%);
+  }
+  100% {
+    transform: translateY(-80%);
+  }
+}
